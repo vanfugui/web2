@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>泰国5日游 - 旅行规划</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Microsoft YaHei', Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+            padding: 40px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+
+        .progress-section {
+            padding: 40px;
+            background: #f8f9fa;
+        }
+
+        .progress-title {
+            font-size: 1.3em;
+            margin-bottom: 20px;
+            color: #333;
+            text-align: center;
+        }
+
+        .progress-container {
+            position: relative;
+            height: 60px;
+            background: #e0e0e0;
+            border-radius: 30px;
+            overflow: visible;
+            margin: 20px 0;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+            border-radius: 30px;
+            transition: width 0.3s ease;
+            position: relative;
+        }
+
+        .progress-handle {
+            position: absolute;
+            right: -20px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 40px;
+            height: 40px;
+            background: white;
+            border: 4px solid #667eea;
+            border-radius: 50%;
+            cursor: grab;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+            z-index: 10;
+        }
+
+        .progress-handle:active {
+            cursor: grabbing;
+            transform: translateY(-50%) scale(1.1);
+        }
+
+        .progress-labels {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 15px;
+            padding: 0 10px;
+        }
+
+        .progress-label {
+            font-size: 0.9em;
+            color: #666;
+            text-align: center;
+        }
+
+        .progress-label.active {
+            color: #667eea;
+            font-weight: bold;
+        }
+
+        .current-day {
+            text-align: center;
+            font-size: 1.5em;
+            color: #667eea;
+            margin-top: 20px;
+            font-weight: bold;
+        }
+
+        .itinerary {
+            padding: 40px;
+        }
+
+        .day-card {
+            background: white;
+            border: 2px solid #e0e0e0;
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 20px;
+            transition: all 0.3s ease;
+            display: none;
+        }
+
+        .day-card.active {
+            display: block;
+            border-color: #667eea;
+            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.2);
+        }
+
+        .day-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #f0f0f0;
+        }
+
+        .day-number {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5em;
+            font-weight: bold;
+            margin-right: 20px;
+        }
+
+        .day-info h2 {
+            color: #333;
+            margin-bottom: 5px;
+        }
+
+        .day-info p {
+            color: #666;
+            font-size: 0.95em;
+        }
+
+        .timeline {
+            position: relative;
+            padding-left: 40px;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 15px;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: #e0e0e0;
+        }
+
+        .timeline-item {
+            position: relative;
+            margin-bottom: 25px;
+        }
+
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -32px;
+            top: 5px;
+            width: 12px;
+            height: 12px;
+            background: #667eea;
+            border-radius: 50%;
+            border: 3px solid white;
+            box-shadow: 0 0 0 2px #667eea;
+        }
+
+        .timeline-time {
+            color: #667eea;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .timeline-content {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 10px;
+        }
+
+        .timeline-content h3 {
+            color: #333;
+            margin-bottom: 8px;
+            font-size: 1.1em;
+        }
+
+        .timeline-content p {
+            color: #666;
+            line-height: 1.6;
+        }
+
+        .icon {
+            display: inline-block;
+            margin-right: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🌴 泰国5日游</h1>
+            <p>2026年5月5日 - 5月9日</p>
+        </div>
+
+        <div class="progress-section">
+            <div class="progress-title">行程进度</div>
+            <div class="progress-container" id="progressContainer">
+                <div class="progress-bar" id="progressBar">
+                    <div class="progress-handle" id="progressHandle"></div>
+                </div>
+            </div>
+            <div class="progress-labels">
+                <div class="progress-label">Day 1</div>
+                <div class="progress-label">Day 2</div>
+                <div class="progress-label">Day 3</div>
+                <div class="progress-label">Day 4</div>
+                <div class="progress-label">Day 5</div>
+            </div>
+            <div class="current-day" id="currentDay">第1天</div>
+        </div>
+
+        <div class="itinerary">
+            <div class="day-card active" data-day="1">
+                <div class="day-header">
+                    <div class="day-number">1</div>
+                    <div class="day-info">
+                        <h2>广州 → 曼谷 → 芭提雅</h2>
+                        <p>5月5日 星期一</p>
+                    </div>
+                </div>
+                <div class="timeline">
+                    <div class="timeline-item">
+                        <div class="timeline-time">✈️ 02:45</div>
+                        <div class="timeline-content">
+                            <h3>广州白云机场出发</h3>
+                            <p>从广州白云机场起飞，开始泰国之旅</p>
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-time">🛬 04:45</div>
+                        <div class="timeline-content">
+                            <h3>抵达廊曼机场</h3>
+                            <p>到达泰国曼谷廊曼机场（Don Mueang Airport）<br>办理入境手续，提取行李</p>
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-time">🚌 06:30</div>
+                        <div class="timeline-content">
+                            <h3>搭乘大巴前往芭提雅</h3>
+                            <p>从廊曼机场出发，乘坐大巴前往芭提雅<br>车程约3.5小时，沿途欣赏泰国风光</p>
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-time">🏨 10:00</div>
+                        <div class="timeline-content">
+                            <h3>抵达芭提雅</h3>
+                            <p>到达芭提雅，办理酒店入住<br>休息调整，准备开始精彩的旅程</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="day-card" data-day="2">
+                <div class="day-header">
+                    <div class="day-number">2</div>
+                    <div class="day-info">
+                        <h2>芭提雅游玩</h2>
+                        <p>5月6日 星期二</p>
+                    </div>
+                </div>
+                <div class="timeline">
+                    <div class="timeline-item">
+                        <div class="timeline-time">📝 待规划</div>
+                        <div class="timeline-content">
+                            <h3>行程待定</h3>
+                            <p>可以安排海滩活动、水上运动、景点游览等</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="day-card" data-day="3">
+                <div class="day-header">
+                    <div class="day-number">3</div>
+                    <div class="day-info">
+                        <h2>芭提雅游玩</h2>
+                        <p>5月7日 星期三</p>
+                    </div>
+                </div>
+                <div class="timeline">
+                    <div class="timeline-item">
+                        <div class="timeline-time">📝 待规划</div>
+                        <div class="timeline-content">
+                            <h3>行程待定</h3>
+                            <p>可以安排海滩活动、水上运动、景点游览等</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="day-card" data-day="4">
+                <div class="day-header">
+                    <div class="day-number">4</div>
+                    <div class="day-info">
+                        <h2>芭提雅游玩</h2>
+                        <p>5月8日 星期四</p>
+                    </div>
+                </div>
+                <div class="timeline">
+                    <div class="timeline-item">
+                        <div class="timeline-time">📝 待规划</div>
+                        <div class="timeline-content">
+                            <h3>行程待定</h3>
+                            <p>可以安排海滩活动、水上运动、景点游览等</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="day-card" data-day="5">
+                <div class="day-header">
+                    <div class="day-number">5</div>
+                    <div class="day-info">
+                        <h2>返程</h2>
+                        <p>5月9日 星期五</p>
+                    </div>
+                </div>
+                <div class="timeline">
+                    <div class="timeline-item">
+                        <div class="timeline-time">📝 待规划</div>
+                        <div class="timeline-content">
+                            <h3>行程待定</h3>
+                            <p>返回曼谷机场，搭乘航班返回广州</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const progressBar = document.getElementById('progressBar');
+        const progressHandle = document.getElementById('progressHandle');
+        const progressContainer = document.getElementById('progressContainer');
+        const currentDayText = document.getElementById('currentDay');
+        const dayCards = document.querySelectorAll('.day-card');
+        const progressLabels = document.querySelectorAll('.progress-label');
+
+        let isDragging = false;
+        let currentDay = 1;
+
+        function updateProgress(percentage) {
+            percentage = Math.max(0, Math.min(100, percentage));
+            progressBar.style.width = percentage + '%';
+            
+            const day = Math.ceil(percentage / 20) || 1;
+            if (day !== currentDay) {
+                currentDay = day;
+                updateDayDisplay(day);
+            }
+        }
+
+        function updateDayDisplay(day) {
+            currentDayText.textContent = `第${day}天`;
+            
+            dayCards.forEach(card => {
+                card.classList.remove('active');
+                if (parseInt(card.dataset.day) === day) {
+                    card.classList.add('active');
+                }
+            });
+
+            progressLabels.forEach((label, index) => {
+                label.classList.remove('active');
+                if (index + 1 === day) {
+                    label.classList.add('active');
+                }
+            });
+        }
+
+        function handleDrag(e) {
+            if (!isDragging) return;
+            
+            const rect = progressContainer.getBoundingClientRect();
+            const x = (e.type.includes('mouse') ? e.clientX : e.touches[0].clientX) - rect.left;
+            const percentage = (x / rect.width) * 100;
+            
+            updateProgress(percentage);
+        }
+
+        progressHandle.addEventListener('mousedown', (e) => {
+            isDragging = true;
+            e.preventDefault();
+        });
+
+        progressHandle.addEventListener('touchstart', (e) => {
+            isDragging = true;
+            e.preventDefault();
+        });
+
+        document.addEventListener('mousemove', handleDrag);
+        document.addEventListener('touchmove', handleDrag);
+
+        document.addEventListener('mouseup', () => {
+            isDragging = false;
+        });
+
+        document.addEventListener('touchend', () => {
+            isDragging = false;
+        });
+
+        progressContainer.addEventListener('click', (e) => {
+            if (e.target === progressHandle) return;
+            
+            const rect = progressContainer.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const percentage = (x / rect.width) * 100;
+            
+            updateProgress(percentage);
+        });
+
+        updateProgress(20);
+    </script>
+</body>
+</html>
